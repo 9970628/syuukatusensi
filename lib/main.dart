@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //機能　開発者が作った
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp()); //mottekuru
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget { //calss=箱 s=lineみたいな､状態がない、何もない
+  const MyApp({super.key});  //kakanaitoikenai
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) { //画面の表示
+    return MaterialApp(  //kiso
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -28,10 +28,11 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple), //
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'), //
     );
+
   }
 }
 
@@ -57,18 +58,18 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {
+    setState(() { //joutaigakawasru suuji
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _counter++; //suujihueru
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { //gamennmieruyouni
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -76,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( //appbar=apurino
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
@@ -102,20 +103,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          mainAxisAlignment: MainAxisAlignment.center, //gamennnosaizunotyuusinnioku
+          children: <Widget>[ //tekisutohyuji
             const Text('You have pushed the button this many times:'),
             Text(
-              '$_counter',
+              '$_counter', //hennsuuu
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+      floatingActionButton: FloatingActionButton( //uiterubotann
+        onPressed: _incrementCounter, //yobidasi 60
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add), //add=purasu kattenihyouji 
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
