@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart'; //機能　開発者が作った
+import 'package:flutter/material.dart';
+import 'package:sennsi_app/screens/calender_screen.dart'; //機能　開発者が作った
 
 void main() {
   runApp(const MyApp()); //mottekuru
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget { //calss=箱 s=lineみたいな､状態が
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple), //
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'), //
+      home:  CalendarScreen(), //
     );
 
   }
