@@ -1,4 +1,12 @@
+<<<<<<< tasklist
 // lib/main.dart
+=======
+import 'package:flutter/material.dart';
+import 'package:sennsi_app/screens/login_screen.dart';
+// task_list_screen.dart ファイルをインポートしてGoalListScreenを使えるようにする
+import 'package:sennsi_app/screens/task_list_screen.dart';
+import 'package:sennsi_app/screens/calender_screen.dart'; //機能　開発者が作った
+>>>>>>> main
 
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
