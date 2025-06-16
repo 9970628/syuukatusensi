@@ -1,9 +1,20 @@
-import 'package:flutter/material.dart';
-// task_list_screen.dart ファイルをインポートしてGoalListScreenを使えるようにする
-import 'package:sennsi_app/screens/task_list_screen.dart';
+// lib/main.dart
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+import 'package:sennsi_app/models/task.dart';
+import 'package:sennsi_app/screens/home_screen.dart'; // 起動画面はHomeScreen
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('ja_JP', null);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => GoalModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,13 +23,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Goal Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      // ★★★ 最初に表示する画面を GoalListScreen に変更 ★★★
-      home: const GoalListScreen(),
+      // ★★★ 最初に表示する画面をHomeScreenに設定 ★★★
+      home: const HomeScreen(),
     );
   }
 }
