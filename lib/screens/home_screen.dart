@@ -7,6 +7,7 @@ import 'package:sennsi_app/models/task.dart';
 import 'package:sennsi_app/screens/calendar_screen.dart';
 import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -67,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                         icon: const Icon(Icons.list_alt),
                         label: const Text('目標リストを開く'),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const GoalListScreen()));
+                          context.go('/login');
                         },
                       ),
                       const SizedBox(height: 16),
