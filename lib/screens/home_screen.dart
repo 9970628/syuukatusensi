@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                         icon: const Icon(Icons.calendar_today),
                         label: const Text('カレンダーを開く'),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CalendarScreen()));
+                          context.go('/calendar');
                         },
                       ),
                        const SizedBox(height: 16),
