@@ -42,7 +42,7 @@ final router = GoRouter(
     // 認証が不要なルート
     GoRoute(
       path: '/login',
-      builder: (context, state) => const GoalListScreen(),
+      builder: (context, state) => const  LoginScreen(),
     ),
   ],
   // リダイレクト処理

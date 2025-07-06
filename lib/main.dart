@@ -10,15 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sennsi_app/models/task.dart';
-import 'package:sennsi_app/screens/home_screen.dart'; // 起動画面はHomeScreen
+import 'package:sennsi_app/screens/home_screen.dart';
+import 'package:device_preview/device_preview.dart' ;// 起動画面はHomeScreen
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ja_JP', null);
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => GoalModel(),
-      child: const MyApp(),
+    DevicePreview(
+      enabled: true,
+      builder: (context) => ChangeNotifierProvider(
+        create: (context) => GoalModel(),
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -29,6 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      builder: DevicePreview.appBuilder,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
       title: 'Goal Tracker',
