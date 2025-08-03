@@ -94,5 +94,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-  assets:
-    - assets/images/backgrounds/tmp.jpg
+  assets: 
+    - assets/images/backgrounds/tmp.jpg  # 画像を変える場合はここに変更・追加してください

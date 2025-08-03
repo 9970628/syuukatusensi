@@ -18,7 +18,7 @@ class GameScreen extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/backgrounds/tmp.jpg', // 画像パス
+            'assets/images/backgrounds/tmp.jpg', // 画像パス(今は仮で置いてます)  pubspec.yaml , assets にも変更・追加を加えてください
             fit: BoxFit.cover,
           ),
           Center(
