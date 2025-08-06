@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sennsi_app/screens/calender_screen.dart';
+import 'package:sennsi_app/screens/home_screen.dart';
 import 'package:sennsi_app/screens/login_screen.dart';
+import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
 import '../widgets/shell.dart';
 
@@ -10,7 +12,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
+  initialLocation: '/home',
   routes: [
     GoRoute(path:'/calendar',
     builder: (context, state)=> CalendarScreen(),
@@ -21,25 +23,26 @@ final router = GoRouter(
       builder: (context, state, child) => Shell(child: child),
       routes: [
         GoRoute(
-          path: '/',
-         builder: (context, state)=> LoginScreen(),
+          path: '/home',
+          pageBuilder: (context, state)=> NoTransitionPage(
+            child: const HomeScreen() )
         ),
         GoRoute(
           path: '/task',
-          builder:(context, state) => GoalListScreen(),
+          pageBuilder: (context, state)=> NoTransitionPage(
+            child: const GoalListScreen() )
         ),
         GoRoute(
           path: '/status',
-          builder: (context, state) => const Scaffold(
-            body: Center(child: Text('ステータス')),
-          ),
+          pageBuilder: (context, state)=> NoTransitionPage(
+            child: const StatusScreen())
         ),
       ],
     ),
     // 認証が不要なルート
     GoRoute(
       path: '/login',
-      builder: (context, state) => const GoalListScreen(),
+      builder: (context, state) => const  LoginScreen(),
     ),
   ],
   // リダイレクト処理

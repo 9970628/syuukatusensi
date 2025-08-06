@@ -8,6 +8,7 @@ import 'package:sennsi_app/screens/calendar_screen.dart';
 import 'package:sennsi_app/screens/game_screen.dart'; // game_screenをインポート
 import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -53,6 +54,7 @@ class HomeScreen extends StatelessWidget {
     final today = DateFormat('M月d日 (E)', 'ja').format(DateTime.now());
 
     return Scaffold(
+
       appBar: AppBar(title: const Text('ホーム')),
       body: Column(
         children: [
@@ -86,6 +88,45 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+
+      appBar: AppBar(
+        title: const Text('ホーム'),
+      ),
+      body: Consumer<GoalModel>(
+        builder: (context, goalModel, child) {
+          return Column(
+            children: [
+              // --- 上半分：ナビゲーションボタンやイラストエリア ---
+              Expanded(
+                child: Center(
+                  // ★★★ ボタンによる画面遷移を実装 ★★★
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.list_alt),
+                        label: const Text('目標リストを開く'),
+                        onPressed: () {
+                          context.go('/login');
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.calendar_today),
+                        label: const Text('カレンダーを開く'),
+                        onPressed: () {
+                          context.go('/calendar');
+                        },
+                      ),
+                       const SizedBox(height: 16),
+                       ElevatedButton.icon(
+                        icon: const Icon(Icons.person),
+                        label: const Text('ステータスを開く'),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StatusScreen()));
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

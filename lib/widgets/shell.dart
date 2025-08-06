@@ -52,7 +52,7 @@ class Shell extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        context.go('/');
+        context.go('/home');
         break;
       case 1:
         context.go('/task');
@@ -62,11 +62,4 @@ class Shell extends StatelessWidget {
         break;
     }
   }
-
-  // int _calculateSelectedIndex(BuildContext context) {
-  //   final String location = GoRouterState.of(context).uri.path;
-  //   if (location.startsWith('/task')) return 1;
-  //   if (location.startsWith('/profile')) return 2;
-  //   return 0;
-  // }
 }

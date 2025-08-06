@@ -1,10 +1,21 @@
-// lib/main.dart
+
+import 'package:flutter/material.dart';
+import 'package:sennsi_app/config/router.dart';
+import 'package:sennsi_app/screens/login_screen.dart';
+// task_list_screen.dart ファイルをインポートしてGoalListScreenを使えるようにする
+import 'package:sennsi_app/screens/task_list_screen.dart';
+import 'package:sennsi_app/screens/calender_screen.dart'; //機能　開発者が作った
+import 'package:sennsi_app/widgets/shell.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sennsi_app/models/task.dart';
 import 'package:sennsi_app/screens/home_screen.dart';
+
+import 'package:device_preview/device_preview.dart' ;// 起動画面はHomeScreen
+
 
 Future<void> main() async {
   // Flutterアプリを初期化するための準備
@@ -14,10 +25,14 @@ Future<void> main() async {
   
   // アプリケーションを起動
   runApp(
-    // アプリ全体でGoalModelを使えるように提供する
-    ChangeNotifierProvider(
-      create: (context) => GoalModel(),
-      child: const MyApp(),
+
+    DevicePreview(
+      enabled: true,
+      builder: (context) => ChangeNotifierProvider(
+        create: (context) => GoalModel(),
+        child: const MyApp(),
+      ),
+
     ),
   );
 }
@@ -28,14 +43,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // マテリアルデザインのアプリを作成するための基本ウィジェット
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // 右上のDEBUGバナーを非表示にする
+
+    return MaterialApp.router(
+      builder: DevicePreview.appBuilder,
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
       title: 'Goal Tracker',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
+
       // アプリ起動時に最初に表示する画面
       home: const HomeScreen(),
     );
