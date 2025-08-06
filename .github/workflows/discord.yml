@@ -20,4 +20,4 @@ jobs:
             Author: ${{ github.actor }}
             Event: ${{ github.event_name }}
             Branch/Ref: ${{ github.ref }}
-            Message: ${{ github.event.head_commit.message }}
+            Title: ${{ github.event.pull_request.title }}
