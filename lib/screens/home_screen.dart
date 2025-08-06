@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sennsi_app/models/task.dart';
 import 'package:sennsi_app/screens/calendar_screen.dart';
+import 'package:sennsi_app/screens/game_screen.dart'; // game_screenをインポート
 import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
 
@@ -16,7 +17,6 @@ class HomeScreen extends StatelessWidget {
     final now = DateTime.now();
     final startOfToday = DateTime(now.year, now.month, now.day);
     final oneWeekFromNow = startOfToday.add(const Duration(days: 8));
-
     final List<Map<String, dynamic>> tasksToSort = [];
 
     for (var mGoal in mediumGoals) {
@@ -42,78 +42,81 @@ class HomeScreen extends StatelessWidget {
         upcomingTaskWidgets.add(ListTile(leading: const Icon(Icons.check_box_outline_blank), title: Text(goal.title), subtitle: Text('$parentTitle / 期限: ${DateFormat('M/d(E)', 'ja').format(goal.deadline!)}')));
       }
     }
-    if (upcomingTaskWidgets.isEmpty) { return [const Padding(padding: EdgeInsets.all(16.0), child: Center(child: Text('1週間以内に期限のタスクはありません。')))]; }
+    if (upcomingTaskWidgets.isEmpty) {
+      return [const Padding(padding: EdgeInsets.all(16.0), child: Center(child: Text('1週間以内に期限のタスクはありません。')))];
+    }
     return upcomingTaskWidgets;
   }
 
   @override
   Widget build(BuildContext context) {
+    final today = DateFormat('M月d日 (E)', 'ja').format(DateTime.now());
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ホーム'),
-      ),
-      body: Consumer<GoalModel>(
-        builder: (context, goalModel, child) {
-          return Column(
-            children: [
-              // --- 上半分：ナビゲーションボタンやイラストエリア ---
-              Expanded(
-                child: Center(
-                  // ★★★ ボタンによる画面遷移を実装 ★★★
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.list_alt),
-                        label: const Text('目標リストを開く'),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const GoalListScreen()));
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.calendar_today),
-                        label: const Text('カレンダーを開く'),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CalendarScreen()));
-                        },
-                      ),
-                       const SizedBox(height: 16),
-                       ElevatedButton.icon(
-                        icon: const Icon(Icons.person),
-                        label: const Text('ステータスを開く'),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StatusScreen()));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // --- 下半分：ダッシュボード ---
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: Card(
-                    elevation: 4,
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('直近のタスク', style: Theme.of(context).textTheme.titleLarge),
-                          const Divider(),
-                          Expanded(child: ListView(children: _buildUpcomingTasks(context, goalModel.mediumGoals))),
-                        ],
-                      ),
+      appBar: AppBar(title: const Text('ホーム')),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(today, style: Theme.of(context).textTheme.headlineMedium),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            ElevatedButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const StatusScreen()));}, child: const Text('ステータス')),
+                            const SizedBox(height: 16),
+                            ElevatedButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const GameScreen()));}, child: const Text('ゲーム')),
+                          ],
+                        ),
+                        Expanded(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(width: 200, height: 200, color: Colors.grey[300]),
+                              Positioned(top: 40, left: 40, child: Container(width: 150, height: 150, color: Colors.grey[400])),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          );
-        },
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Consumer<GoalModel>(
+               builder: (context, goalModel, child) {
+                 return Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: Card(
+                      elevation: 4,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('直近のタスク', style: Theme.of(context).textTheme.titleLarge),
+                            const Divider(),
+                            Expanded(child: ListView(children: _buildUpcomingTasks(context, goalModel.mediumGoals))),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+               }
+            ),
+          ),
+        ],
       ),
     );
   }
