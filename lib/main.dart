@@ -25,7 +25,6 @@ Future<void> main() async {
   
   // アプリケーションを起動
   runApp(
-
     DevicePreview(
       enabled: true,
       builder: (context) => ChangeNotifierProvider(
@@ -53,9 +52,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-
-      // アプリ起動時に最初に表示する画面
-      home: const HomeScreen(),
     );
   }
 }

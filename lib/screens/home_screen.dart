@@ -88,73 +88,9 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
-      appBar: AppBar(
-        title: const Text('ホーム'),
-      ),
-      body: Consumer<GoalModel>(
-        builder: (context, goalModel, child) {
-          return Column(
-            children: [
-              // --- 上半分：ナビゲーションボタンやイラストエリア ---
-              Expanded(
-                child: Center(
-                  // ★★★ ボタンによる画面遷移を実装 ★★★
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.list_alt),
-                        label: const Text('目標リストを開く'),
-                        onPressed: () {
-                          context.go('/login');
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.calendar_today),
-                        label: const Text('カレンダーを開く'),
-                        onPressed: () {
-                          context.go('/calendar');
-                        },
-                      ),
-                       const SizedBox(height: 16),
-                       ElevatedButton.icon(
-                        icon: const Icon(Icons.person),
-                        label: const Text('ステータスを開く'),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StatusScreen()));
-                        },
-                      ),
-                    ],
                   ),
                 ],
               ),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Consumer<GoalModel>(
-               builder: (context, goalModel, child) {
-                 return Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                    child: Card(
-                      elevation: 4,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('直近のタスク', style: Theme.of(context).textTheme.titleLarge),
-                            const Divider(),
-                            Expanded(child: ListView(children: _buildUpcomingTasks(context, goalModel.mediumGoals))),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-               }
             ),
           ),
         ],

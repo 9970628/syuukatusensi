@@ -9,7 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
-
   audioplayers:
     dependency: transitive
     description:
@@ -162,7 +161,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.30.1"
-
   flame_audio:
     dependency: "direct main"
     description:
@@ -171,7 +169,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.8"
-
   flutter:
     dependency: "direct main"
     description: flutter
@@ -336,7 +333,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
-
   path_provider:
     dependency: transitive
     description:
@@ -361,7 +357,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
-
   path_provider_linux:
     dependency: transitive
     description:
@@ -576,10 +571,5 @@ packages:
     source: hosted
     version: "1.1.0"
 sdks:
-
-  dart: ">=3.7.2 <4.0.0"
-  flutter: ">=3.27.1"
-
   dart: ">=3.8.0 <4.0.0"
   flutter: ">=3.32.0"
-
