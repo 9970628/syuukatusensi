@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sennsi_app/game.dart';
 import 'package:sennsi_app/screens/calender_screen.dart';
 import 'package:sennsi_app/screens/home_screen.dart';
 import 'package:sennsi_app/screens/login_screen.dart';
@@ -7,6 +8,7 @@ import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
 import 'package:sennsi_app/screens/game_screen.dart';
 import '../widgets/shell.dart';
+import 'package:flame/game.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -47,7 +49,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/game',
-      builder: (context, state) => const GameScreen(),
+      builder: (context, state) => GameWidget(game: MyGame()),
     ),
   ],
   // リダイレクト処理

@@ -751,43 +751,43 @@ class _StatusBadge extends StatelessWidget {
     );
   }
 
-  Widget _buildGradeSelectionRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 80,
-          child: Text(
-            '学年',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
-        ),
-        Text('：', style: TextStyle(fontSize: 14)),
-        Expanded(
-          child: DropdownButtonFormField<String>(
-            value: _selectedGrade,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-            ),
-            items: _gradeOptions.map((grade) {
-              return DropdownMenuItem(
-                value: grade,
-                child: Text(grade),
-              );
-            }).toList(),
-            onChanged: _isEditing ? (String? newValue) {
-              if (newValue != null) {
-                setState(() {
-                  _selectedGrade = newValue;
-                  _updateJobHuntingPeriod();
-                });
-                // 学年が変更されたら自動保存
-                _saveData();
-              }
-            } : null,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildGradeSelectionRow() {
+  //   return Row(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       SizedBox(
+  //         width: 80,
+  //         child: Text(
+  //           '学年',
+  //           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+  //         ),
+  //       ),
+  //       Text('：', style: TextStyle(fontSize: 14)),
+  //       Expanded(
+  //         child: DropdownButtonFormField<String>(
+  //           value: _selectedGrade,
+  //           decoration: InputDecoration(
+  //             border: OutlineInputBorder(),
+  //           ),
+  //           items: _gradeOptions.map((grade) {
+  //             return DropdownMenuItem(
+  //               value: grade,
+  //               child: Text(grade),
+  //             );
+  //           }).toList(),
+  //           onChanged: _isEditing ? (String? newValue) {
+  //             if (newValue != null) {
+  //               setState(() {
+  //                 _selectedGrade = newValue;
+  //                 _updateJobHuntingPeriod();
+  //               });
+  //               // 学年が変更されたら自動保存
+  //               _saveData();
+  //             }
+  //           } : null,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

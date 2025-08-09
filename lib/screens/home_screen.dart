@@ -174,48 +174,13 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-// =======
-
-//       appBar: AppBar(title: const Text('ホーム')),
-//       body: Column(
-//         children: [
-//           Expanded(
-//             flex: 5,
-//             child: Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(today, style: Theme.of(context).textTheme.headlineMedium),
-//                   const SizedBox(height: 16),
-//                   Expanded(
-//                     child: Row(
-//                       children: [
-//                         Column(
-//                           children: [
-//                             ElevatedButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const StatusScreen()));}, child: const Text('ステータス')),
-//                             const SizedBox(height: 16),
-//                             ElevatedButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const GameScreen()));}, child: const Text('ゲーム')),
-//                           ],
-//                         ),
-//                         Expanded(
-//                           child: Stack(
-//                             alignment: Alignment.center,
-//                             children: [
-//                               Container(width: 200, height: 200, color: Colors.grey[300]),
-//                               Positioned(top: 40, left: 40, child: Container(width: 150, height: 150, color: Colors.grey[400])),
-//                             ],
-//                           ),
-//                         ),
-//                       ],
-// >>>>>>> main
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
