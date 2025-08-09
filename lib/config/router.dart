@@ -5,6 +5,7 @@ import 'package:sennsi_app/screens/home_screen.dart';
 import 'package:sennsi_app/screens/login_screen.dart';
 import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
+import 'package:sennsi_app/screens/game_screen.dart';
 import '../widgets/shell.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -43,6 +44,10 @@ final router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const  LoginScreen(),
+    ),
+    GoRoute(
+      path: '/game',
+      builder: (context, state) => const GameScreen(),
     ),
   ],
   // リダイレクト処理
