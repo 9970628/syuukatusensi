@@ -60,6 +60,8 @@ class Shell extends StatelessWidget {
       case 2:
         context.go('/status');
         break;
+      case 3:
+        context.go('/geme');
     }
   }
 }
