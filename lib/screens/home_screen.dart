@@ -127,12 +127,7 @@ class HomeScreen extends StatelessWidget {
                         icon: const Icon(Icons.person),
                         label: const Text('ステータスを開く'),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const StatusScreen(),
-                            ),
-                          );
+                          context.go('/status');
                         },
                       ),
                       const SizedBox(height: 16),
