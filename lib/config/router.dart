@@ -56,14 +56,13 @@ final router = GoRouter(
       ],
     ),
     // 認証が不要なルート
-
     GoRoute(
       path: '/login',
       builder: (context, state) => const  LoginScreen(),
     ),
     GoRoute(
       path: '/game',
-      builder: (context, state) => GameWidget(game: MyGame()),
+      builder: (context, state) => const GameScreen(),
     ),
 
   ],
