@@ -1,12 +1,17 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'flash_effect.dart';
+import 'package:flutter/foundation.dart';
 
 class Sennsi extends SpriteAnimationComponent with HasGameRef<FlameGame> {
-  bool moving = true; // 移動中かどうか
-  bool flashTriggered = false; // フラッシュしたかどうか
+  final VoidCallback onFlashComplete;
+  final VoidCallback onMoveComplete;
 
-  Sennsi() : super(size: Vector2.all(128));
+  bool moving = true;
+  bool flashTriggered = false;
+
+  Sennsi({required this.onFlashComplete, required this.onMoveComplete})
+    : super(size: Vector2.all(128));
 
   @override
   Future<void> onLoad() async {
@@ -18,7 +23,7 @@ class Sennsi extends SpriteAnimationComponent with HasGameRef<FlameGame> {
       Sprite(image2),
     ], stepTime: 0.2);
 
-    position = Vector2(450, 700);
+    position = Vector2(gameRef.size.x / 2 - size.x / 2, 700);
   }
 
   @override
@@ -28,12 +33,13 @@ class Sennsi extends SpriteAnimationComponent with HasGameRef<FlameGame> {
     if (moving && position.y > 90) {
       position.y -= 50 * dt;
     } else if (moving) {
-      // ここで止まったことを検知
       moving = false;
+
+      onMoveComplete();
 
       if (!flashTriggered) {
         flashTriggered = true;
-        gameRef.add(FlashEffect()); // フラッシュを発動
+        gameRef.add(FlashEffect(onFlashComplete: onFlashComplete));
       }
     }
   }

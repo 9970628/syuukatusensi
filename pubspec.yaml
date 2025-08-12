@@ -75,6 +75,10 @@ flutter:
     - assets/images/sennsi_walk2.png
     - assets/images/background.png
     - assets/audio/bgm.mp3
+    - assets/images/dungeon_corridor01.png
+
+    #- assets/images/backgrounds/tmp.jpg  # 画像を変える場合はここに変更・追加してください
+    #- assets/images/backgrounds/status_screen.jpg
 
 
   # To add assets to your application, add an assets section, like this:
@@ -106,4 +110,5 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
   # see https://flutter.dev/to/font-from-package

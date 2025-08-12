@@ -1,9 +1,15 @@
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-
-import 'game.dart'; // あなたが作った MyGame クラスがここにあると想定
+import 'screens/game_screen.dart'; // ゲーム画面を呼ぶ
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(GameWidget(game: MyGame()));
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: const GameScreen());
+  }
 }
