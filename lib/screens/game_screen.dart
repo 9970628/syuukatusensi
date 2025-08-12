@@ -1,93 +1,67 @@
 
-import 'package:go_router/go_router.dart';
-
-// lib/screens/game_screen.dart
-
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:sennsi_app/game/task_battle_game.dart';
+import 'package:flame/game.dart';
+import 'package:sennsi_app/screens/battle_screen.dart';
+import '../game.dart'; // MyGame クラスがある場所
 
-
-class GameScreen extends StatelessWidget {
+class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  bool flashFinished = false;
+  bool enteredDungeon = false;
+
+  void onFlashComplete() {
+    setState(() {
+      flashFinished = true;
+    });
+    // ここでは画面遷移は行わず、ボタン表示のみ制御
+  }
+
+  void enterDungeon() {
+    if (!enteredDungeon) {
+      setState(() {
+        enteredDungeon = true;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const BattleScreen()),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ダンジョン'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), // ← 戻るアイコン
-          onPressed: () => context.go('/home'), // ← ホーム画面に戻る処理
-        ),
-      ),
+
       body: Stack(
-        fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/backgrounds/tmp.jpg', // 画像パス(今は仮で置いてます)  pubspec.yaml , assets にも変更・追加を加えてください
-            fit: BoxFit.cover,
-          ),
-          Center(
-            child: Container(
-              color: Colors.black.withOpacity(0.3),
-              padding: const EdgeInsets.all(24),
-              child: const Text(
-                'ここがダンジョン画面です',
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 8,
-                      color: Colors.black54,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                ),
-              ),
+          GameWidget(
+            game: MyGame(
+              onFlashComplete: onFlashComplete,
+              onMoveComplete: () {
+                // ここでは何もしない
+              },
             ),
           ),
+          if (!enteredDungeon)
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: ElevatedButton(
+                onPressed: enterDungeon,
+                child: const Text('今すぐダンジョンに入る'),
+              ),
+            ),
         ],
       ),
     );
   }
 }
-// =======
-//     final game = TaskBattleGame();
 
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('バトル'),
-//       ),
-//       body: Column(
-//         children: [
-//           Expanded(
-//             child: Container(
-//               margin: const EdgeInsets.all(16.0),
-//               decoration: BoxDecoration(
-//                 border: Border.all(color: Colors.grey),
-//               ),
-//               child: GameWidget(game: game),
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: ElevatedButton.icon(
-//               icon: const Icon(Icons.flash_on),
-//               label: const Text('攻撃'),
-//               style: ElevatedButton.styleFrom(
-//                 minimumSize: const Size.fromHeight(50),
-//               ),
-//               onPressed: () {
-//                 game.attack();
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-// >>>>>>> main

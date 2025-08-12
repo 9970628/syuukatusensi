@@ -8,7 +8,11 @@ import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
 import 'package:sennsi_app/screens/game_screen.dart';
 import '../widgets/shell.dart';
+
+import 'package:sennsi_app/screens/battle_screen.dart';
+
 import 'package:flame/game.dart';
+
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -17,9 +21,7 @@ final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/home',
   routes: [
-    GoRoute(path:'/calendar',
-    builder: (context, state)=> CalendarScreen(),
-     ),
+    GoRoute(path: '/calendar', builder: (context, state) => CalendarScreen()),
     // 認証が必要なルート
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -27,22 +29,34 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: '/home',
-          pageBuilder: (context, state)=> NoTransitionPage(
-            child: const HomeScreen() )
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const HomeScreen()),
         ),
         GoRoute(
           path: '/task',
-          pageBuilder: (context, state)=> NoTransitionPage(
-            child: const GoalListScreen() )
+          pageBuilder:
+              (context, state) =>
+                  NoTransitionPage(child: const GoalListScreen()),
         ),
         GoRoute(
           path: '/status',
-          pageBuilder: (context, state)=> NoTransitionPage(
-            child: const StatusScreen())
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const StatusScreen()),
+        ),
+        GoRoute(
+          path: '/game',
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const GameScreen()),
+        ),
+        GoRoute(
+          path: '/battle',
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const BattleScreen()),
         ),
       ],
     ),
     // 認証が不要なルート
+
     GoRoute(
       path: '/login',
       builder: (context, state) => const  LoginScreen(),
@@ -51,6 +65,7 @@ final router = GoRouter(
       path: '/game',
       builder: (context, state) => GameWidget(game: MyGame()),
     ),
+
   ],
   // リダイレクト処理
   redirect: (context, state) async {
