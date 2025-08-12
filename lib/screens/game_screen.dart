@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:sennsi_app/screens/battle_screen.dart';
@@ -33,9 +34,11 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Stack(
         children: [
           GameWidget(
@@ -61,3 +64,4 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 }
+

@@ -1,0 +1,27 @@
+name: Discord Notify
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Discord
+        uses: Ilshidur/action-discord@0.4.0
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            🚀 GitHubイベント通知！
+            Repository: ${{ github.repository }}
+            Author: ${{ github.actor }}
+            Event: ${{ github.event_name }}
+            Branch/Ref: ${{ github.ref }}
+            {{#if github.event.pull_request}}
+            Title: {{ github.event.pull_request.title }}
+            {{else}}
+            Message: {{ github.event.head_commit.message }}
+            {{/if }}
