@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:sennsi_app/screens/battle_screen.dart';
@@ -64,4 +65,5 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 }
+
 
