@@ -17,7 +17,7 @@ class Shell extends StatelessWidget {
     int currentIndex = 0;
     if (location.startsWith('/task')) {
       currentIndex = 1;
-    } else if (location.startsWith('/status')) {
+    } else if (location.startsWith('/input') || location.startsWith('/profile')) {
       currentIndex = 2;
     }
     return Scaffold(
@@ -58,8 +58,10 @@ class Shell extends StatelessWidget {
         context.go('/task');
         break;
       case 2:
-        context.go('/status');
+        context.go('/input'); // プロフィール入力画面へ遷移
         break;
+      case 3:
+        context.go('/geme');
     }
   }
 }
