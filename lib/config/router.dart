@@ -10,7 +10,11 @@ import 'package:sennsi_app/screens/game_screen.dart';
 import 'package:sennsi_app/screens/profile_screen.dart';
 import 'package:sennsi_app/screens/profile_data_input_screen.dart';
 import '../widgets/shell.dart';
+
+import 'package:sennsi_app/screens/battle_screen.dart';
+
 import 'package:flame/game.dart';
+
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -20,11 +24,13 @@ final router = GoRouter(
   initialLocation: '/home',
   routes: [
     GoRoute(path: '/calendar', builder: (context, state) => CalendarScreen()),
+
     GoRoute(
       path: '/status',
       pageBuilder: (context, state) =>
           MaterialPage(child: const StatusScreen()),
     ),
+
     // 認証が必要なルート
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -40,6 +46,7 @@ final router = GoRouter(
           pageBuilder:
               (context, state) =>
                   NoTransitionPage(child: const GoalListScreen()),
+
         ),
         GoRoute(
           path: '/input',
@@ -52,6 +59,23 @@ final router = GoRouter(
           pageBuilder:
               (context, state) =>
                   NoTransitionPage(child: const ProfileScreen()),
+
+        ),
+        GoRoute(
+          path: '/status',
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const StatusScreen()),
+        ),
+        GoRoute(
+          path: '/game',
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const GameScreen()),
+        ),
+        GoRoute(
+          path: '/battle',
+          pageBuilder:
+              (context, state) => NoTransitionPage(child: const BattleScreen()),
+
         ),
       ],
     ),
@@ -59,8 +83,9 @@ final router = GoRouter(
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
       path: '/game',
-      builder: (context, state) => GameWidget(game: MyGame()),
+      builder: (context, state) => const GameScreen(),
     ),
+
   ],
   // リダイレクト処理
   redirect: (context, state) async {
