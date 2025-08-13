@@ -7,6 +7,8 @@ import 'package:sennsi_app/screens/login_screen.dart';
 import 'package:sennsi_app/screens/status_screen.dart';
 import 'package:sennsi_app/screens/task_list_screen.dart';
 import 'package:sennsi_app/screens/game_screen.dart';
+import 'package:sennsi_app/screens/profile_screen.dart';
+import 'package:sennsi_app/screens/profile_data_input_screen.dart';
 import '../widgets/shell.dart';
 
 import 'package:sennsi_app/screens/battle_screen.dart';
@@ -22,6 +24,13 @@ final router = GoRouter(
   initialLocation: '/home',
   routes: [
     GoRoute(path: '/calendar', builder: (context, state) => CalendarScreen()),
+
+    GoRoute(
+      path: '/status',
+      pageBuilder: (context, state) =>
+          MaterialPage(child: const StatusScreen()),
+    ),
+
     // 認証が必要なルート
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -37,6 +46,20 @@ final router = GoRouter(
           pageBuilder:
               (context, state) =>
                   NoTransitionPage(child: const GoalListScreen()),
+
+        ),
+        GoRoute(
+          path: '/input',
+          pageBuilder:
+              (context, state) =>
+                  NoTransitionPage(child: const ProfileDataInputScreen()),
+        ),
+        GoRoute(
+          path: '/profile',
+          pageBuilder:
+              (context, state) =>
+                  NoTransitionPage(child: const ProfileScreen()),
+
         ),
         GoRoute(
           path: '/status',
@@ -52,14 +75,12 @@ final router = GoRouter(
           path: '/battle',
           pageBuilder:
               (context, state) => NoTransitionPage(child: const BattleScreen()),
+
         ),
       ],
     ),
     // 認証が不要なルート
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const  LoginScreen(),
-    ),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
     GoRoute(
       path: '/game',
       builder: (context, state) => const GameScreen(),
