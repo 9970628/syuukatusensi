@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'components/sennsi.dart';
-import 'components/background.dart';
+import '../../components/sennsi.dart';
+import '../../components/background.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 class MyGame extends FlameGame {

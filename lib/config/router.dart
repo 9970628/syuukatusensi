@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sennsi_app/game.dart';
-import 'package:sennsi_app/screens/calender_screen.dart';
-import 'package:sennsi_app/screens/home_screen.dart';
-import 'package:sennsi_app/screens/login_screen.dart';
-import 'package:sennsi_app/screens/status_screen.dart';
-import 'package:sennsi_app/screens/task_list_screen.dart';
-import 'package:sennsi_app/screens/game_screen.dart';
-import 'package:sennsi_app/screens/profile_screen.dart';
-import 'package:sennsi_app/screens/profile_data_input_screen.dart';
-import '../widgets/shell.dart';
+import 'package:sennsi_app/features/game/game.dart';
+import 'package:sennsi_app/features/calendar/calender_screen.dart';
+import 'package:sennsi_app/features/home/home_screen.dart';
+import 'package:sennsi_app/features/auth/login_screen.dart';
+import 'package:sennsi_app/features/profile/status_screen.dart';
+import 'package:sennsi_app/features/tasks/task_list_screen.dart';
+import 'package:sennsi_app/features/game/game_screen.dart';
+import 'package:sennsi_app/features/profile/profile_screen.dart';
+import 'package:sennsi_app/features/profile/profile_data_input_screen.dart';
+import '../shared/widgets/shell.dart';
 
-import 'package:sennsi_app/screens/battle_screen.dart';
+import 'package:sennsi_app/features/game/battle/battle_screen.dart';
 
 import 'package:flame/game.dart';
 

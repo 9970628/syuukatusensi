@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:sennsi_app/models/task.dart';
+import 'package:sennsi_app/shared/models/task.dart';
 
 class GoalListScreen extends StatelessWidget {
   const GoalListScreen({super.key});

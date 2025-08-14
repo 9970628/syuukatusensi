@@ -1,21 +1,21 @@
-// lib/widgets/add_edit_medium_goal_dialog.dart
+// lib/widgets/add_edit_small_goal_dialog.dart
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sennsi_app/models/task.dart';
+import 'package:sennsi_app/shared/models/task.dart';
 
-class AddOrEditMediumGoalDialog extends StatefulWidget {
+class AddOrEditSmallGoalDialog extends StatefulWidget {
   final Function(String title, DateTime? deadline) onSave;
   final bool isEditMode;
-  final MediumGoal? initialGoal;
+  final SmallGoal? initialGoal;
 
-  const AddOrEditMediumGoalDialog({ super.key, required this.onSave, this.isEditMode = false, this.initialGoal });
+  const AddOrEditSmallGoalDialog({ super.key, required this.onSave, this.isEditMode = false, this.initialGoal });
 
   @override
-  State<AddOrEditMediumGoalDialog> createState() => _AddOrEditMediumGoalDialogState();
+  State<AddOrEditSmallGoalDialog> createState() => _AddOrEditSmallGoalDialogState();
 }
 
-class _AddOrEditMediumGoalDialogState extends State<AddOrEditMediumGoalDialog> {
+class _AddOrEditSmallGoalDialogState extends State<AddOrEditSmallGoalDialog> {
   final _titleController = TextEditingController();
   DateTime? _selectedDate;
 
@@ -36,9 +36,9 @@ class _AddOrEditMediumGoalDialogState extends State<AddOrEditMediumGoalDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.isEditMode ? '中目標の編集' : '中目標の追加'),
+      title: Text(widget.isEditMode ? '小目標の編集' : '小目標の追加'),
       content: Column(mainAxisSize: MainAxisSize.min, children: [
-        TextField(controller: _titleController, decoration: const InputDecoration(hintText: '目標のタイトル'), autofocus: true),
+        TextField(controller: _titleController, decoration: const InputDecoration(hintText: 'やるべきことを入力'), autofocus: true),
         const SizedBox(height: 16),
         Row(children: [ Expanded(child: Text(_selectedDate == null ? '期限を選択' : '期限: ${DateFormat('yyyy/MM/dd').format(_selectedDate!)}')), IconButton(icon: const Icon(Icons.calendar_today), onPressed: _pickDate) ])
       ]),

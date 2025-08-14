@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:sennsi_app/models/task.dart';
+import 'package:sennsi_app/shared/models/task.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sennsi_app/screens/calendar_screen.dart';
-import 'package:sennsi_app/screens/game_screen.dart'; // game_screenをインポート
-import 'package:sennsi_app/screens/status_screen.dart';
-import 'package:sennsi_app/screens/task_list_screen.dart';
+import 'package:sennsi_app/features/game/game_screen.dart'; // game_screenをインポート
+import 'package:sennsi_app/features/profile/status_screen.dart';
+import 'package:sennsi_app/features/tasks/task_list_screen.dart';
 import 'package:go_router/go_router.dart';
 
 // 画面遷移で直接ウィジェットを呼ばないので、以下のインポートは不要になることが多い
@@ -130,9 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Center(child: Text('1週間以内に期限のタスクはありません。')),
         ),
       ];
-// =======
-//       return [const Padding(padding: EdgeInsets.all(16.0), child: Center(child: Text('1週間以内に期限のタスクはありません。')))];
-// >>>>>>> main
     }
     return upcomingTaskWidgets;
   }
@@ -193,59 +189,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // --- 4. ナビゲーションエリア ---
           Row(
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('ホーム')),
-      body: Consumer<GoalModel>(
-        builder: (context, goalModel, child) {
-          return Column(
             children: [
               Expanded(
-
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.login),
                   label: const FittedBox(
                     child: Text('ログイン'),
-
                   ),
                   onPressed: () => context.go('/login'),
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
-
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.calendar_today),
                   label: const FittedBox(
                     child: Text('カレンダー'),
-// =======
-//                 child: Padding(
-//                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-//                   child: Card(
-//                     elevation: 4,
-//                     child: Container(
-//                       width: double.infinity,
-//                       padding: const EdgeInsets.all(16.0),
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             '直近のタスク',
-//                             style: Theme.of(context).textTheme.titleLarge,
-//                           ),
-//                           const Divider(),
-//                           Expanded(
-//                             child: ListView(
-//                               children: _buildUpcomingTasks(
-//                                 context,
-//                                 goalModel.mediumGoals,
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-// >>>>>>> main
                   ),
                   onPressed: () => context.go('/calendar'),
                 ),

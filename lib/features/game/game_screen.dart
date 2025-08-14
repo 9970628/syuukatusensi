@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
-import 'package:sennsi_app/screens/battle_screen.dart';
-import '../game.dart'; // MyGame クラスがある場所
+import 'package:sennsi_app/features/game/battle/battle_screen.dart';
+import 'game.dart'; // MyGame クラスがある場所
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 // ★★★ 変更点：新しいダイアログファイルをインポート ★★★
-import 'package:sennsi_app/widgets/add_edit_medium_goal_dialog.dart';
-import 'package:sennsi_app/widgets/add_edit_small_goal_dialog.dart';
+import 'package:sennsi_app/shared/widgets/add_edit_medium_goal_dialog.dart';
+import 'package:sennsi_app/shared/widgets/add_edit_small_goal_dialog.dart';
 
 // --- データモデルの定義 ---
 class SmallGoal {

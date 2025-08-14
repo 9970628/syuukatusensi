@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:sennsi_app/models/task.dart';
+import 'package:sennsi_app/shared/models/task.dart';
 
 class CalendarScreen extends StatefulWidget {
   @override

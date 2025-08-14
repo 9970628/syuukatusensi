@@ -1,18 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:sennsi_app/config/router.dart';
-import 'package:sennsi_app/screens/login_screen.dart';
+import 'package:sennsi_app/features/auth/login_screen.dart';
 // task_list_screen.dart ファイルをインポートしてGoalListScreenを使えるようにする
-import 'package:sennsi_app/screens/task_list_screen.dart';
-import 'package:sennsi_app/screens/calender_screen.dart'; //機能　開発者が作った
-import 'package:sennsi_app/widgets/shell.dart';
+import 'package:sennsi_app/features/tasks/task_list_screen.dart';
+import 'package:sennsi_app/features/calendar/calender_screen.dart'; //機能　開発者が作った
+import 'package:sennsi_app/shared/widgets/shell.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
-import 'package:sennsi_app/models/task.dart';
-import 'package:sennsi_app/screens/home_screen.dart';
+import 'package:sennsi_app/shared/models/task.dart';
+import 'package:sennsi_app/features/home/home_screen.dart';
 
 import 'package:device_preview/device_preview.dart' ;// 起動画面はHomeScreen
 
