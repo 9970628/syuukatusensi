@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "mcp__serena__list_dir"
     ],
     "deny": []
   }
