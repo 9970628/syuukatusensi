@@ -31,6 +31,28 @@ class _ProfileScreenState extends State<ProfileScreen>
   int exp = 0;
   int get nextExp => (100 * pow(1.5, level - 1)).toInt();
 
+  // --- 1. 学年の表示を1~4年＋M1/M2にする ---
+  final List<Map<String, dynamic>> gradeOptions = [
+    {'label': '1年', 'value': 1},
+    {'label': '2年', 'value': 2},
+    {'label': '3年', 'value': 3},
+    {'label': '4年', 'value': 4},
+    {'label': 'M1', 'value': 5},
+    {'label': 'M2', 'value': 6},
+  ];
+
+  String get gradeLabel {
+    switch (grade) {
+      case 1: return '1年';
+      case 2: return '2年';
+      case 3: return '3年';
+      case 4: return '4年';
+      case 5: return 'M1';
+      case 6: return 'M2';
+      default: return '$grade年';
+    }
+  }
+
   void _resetData() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('name'); // 名前をリセット
@@ -105,7 +127,10 @@ Future<void> _loadProfileData() async {
     company = prefs.getString('company') ?? "未設定";
 
     DateTime today = DateTime.now();
-    int graduationYear = today.year + (5 - grade); // 学年に応じて卒業年度計算
+    int mappedGrade = grade;
+    if (grade == 5) mappedGrade = 3; // M1→3年
+    if (grade == 6) mappedGrade = 4; // M2→4年
+    int graduationYear = today.year + (5 - mappedGrade);
     DateTime graduationDate = DateTime(graduationYear, 4, 1);
 
     int daysLeft = graduationDate.difference(today).inDays;
@@ -120,7 +145,10 @@ void _changeStat(String stat, int delta) {
         grade = max(1, grade + delta);
         // 学年変更に応じて残り週を再計算
         DateTime today = DateTime.now();
-        int graduationYear = today.year + (5 - grade);
+        int mappedGrade = grade;
+        if (grade == 5) mappedGrade = 3; // M1→3年
+        if (grade == 6) mappedGrade = 4; // M2→4年
+        int graduationYear = today.year + (5 - mappedGrade);
         DateTime graduationDate = DateTime(graduationYear, 4, 1);
 
         int daysLeft = graduationDate.difference(today).inDays;
@@ -334,7 +362,7 @@ Widget build(BuildContext context) {
                               child: _StatusBadge(
                                 icon: Icons.school,
                                 label: '学年',
-                                value: '$grade',
+                                value: '$gradeLabel',
                                 color: Colors.green,
                                 onAdd: () => _changeStat('grade', 1),
                                 onRemove: () => _changeStat('grade', -1),
