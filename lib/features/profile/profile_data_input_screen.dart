@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:async'; // Timer 用
+import 'dart:async';
 
 class ProfileDataInputScreen extends StatefulWidget {
   const ProfileDataInputScreen({super.key});
@@ -16,6 +16,16 @@ class _ProfileDataInputScreenState extends State<ProfileDataInputScreen> {
   int _selectedGrade = 1;
   int _weeksLeft = 0;
   bool _isLoading = true;
+  
+  // 学年選択肢リストを追加（クラスの先頭に）
+  final List<Map<String, dynamic>> gradeOptions = [
+    {'label': '1年', 'value': 1},
+    {'label': '2年', 'value': 2},
+    {'label': '3年', 'value': 3},
+    {'label': '4年', 'value': 4},
+    {'label': 'M1', 'value': 5},
+    {'label': 'M2', 'value': 6},
+  ];
 
   @override
   void initState() {
@@ -27,7 +37,7 @@ class _ProfileDataInputScreenState extends State<ProfileDataInputScreen> {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString('name') != null) {
       if (!mounted) return;
-      context.go('/profile'); // データが既にあればプロフィール画面へ
+      context.go('/profile');
     } else {
       setState(() {
         _isLoading = false;
@@ -41,19 +51,16 @@ class _ProfileDataInputScreenState extends State<ProfileDataInputScreen> {
       return;
     }
 
-    // 名前を24文字以内に制限
-    String limitedName = _nameController.text.length > 24
-        ? _nameController.text.substring(0, 24)
-        : _nameController.text;
-    // 志望企業を36文字以内に制限
-    String limitedCompany = _companyController.text.length > 36
-        ? _companyController.text.substring(0, 36)
-        : _companyController.text;
+    String limitedName =
+        _nameController.text.length > 24
+            ? _nameController.text.substring(0, 24)
+            : _nameController.text;
+    String limitedCompany =
+        _companyController.text.length > 36
+            ? _companyController.text.substring(0, 36)
+            : _companyController.text;
 
-    // 現在の日付を自動取得
     DateTime currentDate = DateTime.now();
-
-    // 残り週を計算
     DateTime endDate = _getEndDate(_selectedGrade);
     _weeksLeft = _calculateWeeksLeft(currentDate, endDate);
 
@@ -65,7 +72,6 @@ class _ProfileDataInputScreenState extends State<ProfileDataInputScreen> {
 
     if (!mounted) return;
 
-    // データを次の画面に渡す
     context.go(
       '/profile',
       extra: {
@@ -80,21 +86,25 @@ class _ProfileDataInputScreenState extends State<ProfileDataInputScreen> {
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("入力エラー"),
-        content: Text(message),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("OK"),
+      builder:
+          (context) => AlertDialog(
+            title: const Text("入力エラー"),
+            content: Text(message),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("OK"),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
   DateTime _getEndDate(int grade) {
-    int year = DateTime.now().year + (5 - grade);
+    int mappedGrade = grade;
+    if (grade == 5) mappedGrade = 3; // M1→3年
+    if (grade == 6) mappedGrade = 4; // M2→4年
+    int year = DateTime.now().year + (5 - mappedGrade);
     return DateTime(year, 4, 1);
   }
 
@@ -106,44 +116,169 @@ class _ProfileDataInputScreenState extends State<ProfileDataInputScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("初期データ入力")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: "名前（24文字以内）"),
-            ),
-            DropdownButton<int>(
-              value: _selectedGrade,
-              items: List.generate(4, (index) => index + 1)
-                  .map((grade) => DropdownMenuItem(
-                        value: grade,
-                        child: Text("$grade 年"),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedGrade = value!;
-                });
-              },
-            ),
-            TextField(
-              controller: _companyController,
-              decoration: const InputDecoration(labelText: "志望企業（36文字以内）"),
-            ),
-            ElevatedButton(
-              onPressed: _saveData,
-              child: const Text("保存"),
-            ),
-          ],
+      appBar: AppBar(title: const Text("プロフィール入力欄")),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 2),
+            color: Colors.white,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // タイトル行
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                alignment: Alignment.center,
+                child: const Text(
+                  "プロフィール",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 8,
+                  ),
+                ),
+              ),
+              Divider(color: Colors.black, thickness: 1),
+              // 氏名欄
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      width: 80,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: BorderSide(color: Colors.black, width: 1),
+                        ),
+                      ),
+                      child: const Text(
+                        "氏名",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: TextField(
+                          controller: _nameController,
+                          decoration: const InputDecoration(
+                            hintText: "氏名を入力（24文字以内）",
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          maxLength: 24,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.black, thickness: 1),
+              // 学年欄
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      width: 80,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: BorderSide(color: Colors.black, width: 1),
+                        ),
+                      ),
+                      child: const Text(
+                        "学年",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(                        
+                        padding: const EdgeInsets.all(8),
+                        alignment: Alignment.centerLeft,
+                        child: DropdownButton<int>(
+                          value: _selectedGrade,
+                          items: gradeOptions
+                              .map((option) => DropdownMenuItem(
+                                    value: option['value'] as int,
+                                    child: Text(option['label'] as String),
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGrade = value!;
+                            });
+                          },
+                          underline: Container(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.black, thickness: 1),
+              // 志望企業欄
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      width: 80,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: BorderSide(color: Colors.black, width: 1),
+                        ),
+                      ),
+                      alignment: Alignment.topLeft,
+                      child: const Text(
+                        "志望企業",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: TextField(
+                          controller: _companyController,
+                          decoration: const InputDecoration(
+                            hintText: "志望企業を入力（36文字以内）",
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          maxLength: 36,
+                          minLines: 3,
+                          maxLines: 3,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.black, thickness: 1),
+              // 保存ボタン（上下スペースを均等に）
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: ElevatedButton(
+                  onPressed: _saveData,
+                  child: const Text("保存"),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
