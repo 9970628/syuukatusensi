@@ -262,31 +262,31 @@ Widget build(BuildContext context) {
 
   return Scaffold(
     backgroundColor: Colors.grey[100],
-    appBar: AppBar(
-      title: Text(
-        'プロフィール',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 18 * scale,
-        ),
-      ),
-      backgroundColor: Colors.white,
-      iconTheme: const IconThemeData(color: Colors.black),
-      bottom: TabBar(
-        controller: _tabController,
-        indicatorColor: Colors.amber,
-        labelColor: Colors.black,
-        unselectedLabelColor: Colors.grey,
-        tabs: [
-          Tab(
-            child: Text(
-              '基本',
-              style: TextStyle(fontSize: 14 * scale),
-            ),
-          ),
-        ],
-      ),
-    ),
+    // appBar: AppBar(
+    //   title: Text(
+    //     'プロフィール',
+    //     style: TextStyle(
+    //       color: Colors.black,
+    //       fontSize: 18 * scale,
+    //     ),
+    //   ),
+    //   backgroundColor: Colors.white,
+    //   iconTheme: const IconThemeData(color: Colors.black),
+    //   bottom: TabBar(
+    //     controller: _tabController,
+    //     indicatorColor: Colors.amber,
+    //     labelColor: Colors.black,
+    //     unselectedLabelColor: Colors.grey,
+    //     tabs: [
+    //       Tab(
+    //         child: Text(
+    //           '基本',
+    //           style: TextStyle(fontSize: 14 * scale),
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // ),
     body: TabBarView(
       controller: _tabController,
       children: [

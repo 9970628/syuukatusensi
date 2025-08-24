@@ -13,6 +13,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:sennsi_app/shared/models/task.dart';
 import 'package:sennsi_app/features/home/home_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+
 
 import 'package:device_preview/device_preview.dart' ;// 起動画面はHomeScreen
 
@@ -25,6 +27,7 @@ Future<void> main() async {
   
   // アプリケーションを起動
   runApp(
+
     DevicePreview(
       enabled: true,
       builder: (context) => ChangeNotifierProvider(
