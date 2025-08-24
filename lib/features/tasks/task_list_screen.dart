@@ -11,35 +11,30 @@ class GoalListScreen extends StatelessWidget {
     return Consumer<GoalModel>(
       builder: (context, goalModel, child) {
         return Scaffold(
-          backgroundColor: const Color(0xFF1A1A2E), // ダークブルー背景
+          backgroundColor: const Color(0xFFF8F9FA),
           appBar: AppBar(
             title: const Text(
-              '就活クエストボード',
+              '就活タスク管理表',
               style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+                color: Color(0xFF2C3E50),
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
               ),
             ),
-            backgroundColor: const Color(0xFF16213E),
-            elevation: 0,
+            backgroundColor: Colors.white,
+            elevation: 1,
             centerTitle: true,
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF16213E), Color(0xFF0F3460)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-            ),
+            shadowColor: Colors.black12,
           ),
           body: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF1A1A2E), Color(0xFF16213E)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+              color: Color(0xFFF8F9FA),
+              image: DecorationImage(
+                image: NetworkImage(
+                  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgo8cGF0aCBkPSJNIDIwIDAgTCAwIDAgMCAyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRTBFNkVEIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9wYXR0ZXJuPgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiIC8+Cjwvc3ZnPg=='
+                ),
+                repeat: ImageRepeat.repeat,
+                opacity: 0.3,
               ),
             ),
             child:
@@ -56,26 +51,22 @@ class GoalListScreen extends StatelessWidget {
           ),
           floatingActionButton: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              gradient: const LinearGradient(
-                colors: [Color(0xFFE94560), Color(0xFFFF6B6B)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              borderRadius: BorderRadius.circular(8),
+              color: const Color(0xFF3498DB),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFE94560).withOpacity(0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
+                  color: const Color(0xFF3498DB).withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
             child: FloatingActionButton(
               onPressed: () => goalModel.showAddMediumGoalDialog(context),
-              tooltip: '新しいクエストを追加',
+              tooltip: '新しいタスクを追加',
               backgroundColor: Colors.transparent,
               elevation: 0,
-              child: const Icon(Icons.add_task, color: Colors.white, size: 28),
+              child: const Icon(Icons.add, color: Colors.white, size: 24),
             ),
           ),
         );
@@ -89,32 +80,47 @@ class GoalListScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(32),
+            margin: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: const Color(0xFF0F3460).withOpacity(0.5),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFF533483), width: 2),
-            ),
-            child: const Icon(
-              Icons.assignment_outlined,
-              size: 64,
-              color: Color(0xFF533483),
-            ),
-          ),
-          const SizedBox(height: 24),
-          const Text(
-            '🎮 クエストボードは空です',
-            style: TextStyle(
               color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: const Color(0xFF34495E), width: 1),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            '新しい就活クエストを追加して\n冒険を始めましょう！',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xFFB0B0B0), fontSize: 16),
+            child: Column(
+              children: [
+                const Icon(
+                  Icons.assignment_outlined,
+                  size: 48,
+                  color: Color(0xFF34495E),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'タスクが登録されていません',
+                  style: TextStyle(
+                    color: Color(0xFF2C3E50),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  '就活に関するタスクを追加して\n効率的に進めましょう',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF7F8C8D),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -132,52 +138,41 @@ class GoalListScreen extends StatelessWidget {
     final progress = totalTasks > 0 ? completedTasks / totalTasks : 0.0;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFF0F3460).withOpacity(0.8),
-            const Color(0xFF533483).withOpacity(0.6),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color:
-              progress == 1.0
-                  ? const Color(0xFF4ECDC4)
-                  : const Color(0xFF533483),
-          width: 2,
+          color: progress == 1.0
+              ? const Color(0xFF27AE60)
+              : const Color(0xFF34495E),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: (progress == 1.0
-                    ? const Color(0xFF4ECDC4)
-                    : const Color(0xFF533483))
-                .withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
         children: [
-          // クエストヘッダー
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
+              color: progress == 1.0 
+                  ? const Color(0xFF27AE60).withOpacity(0.1)
+                  : const Color(0xFFF8F9FA),
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(14),
-                topRight: Radius.circular(14),
+                topLeft: Radius.circular(3),
+                topRight: Radius.circular(3),
               ),
-              gradient: LinearGradient(
-                colors:
-                    progress == 1.0
-                        ? [const Color(0xFF4ECDC4), const Color(0xFF44A08D)]
-                        : [const Color(0xFF16213E), const Color(0xFF0F3460)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+              border: const Border(
+                bottom: BorderSide(
+                  color: Color(0xFFE0E6ED),
+                  width: 1,
+                ),
               ),
             ),
             child: Column(
@@ -191,27 +186,17 @@ class GoalListScreen extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color:
-                            progress == 1.0
-                                ? Colors.white.withOpacity(0.2)
-                                : const Color(0xFFE94560).withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color:
-                              progress == 1.0
-                                  ? Colors.white.withOpacity(0.3)
-                                  : const Color(0xFFE94560).withOpacity(0.3),
-                        ),
+                        color: progress == 1.0
+                            ? const Color(0xFF27AE60)
+                            : const Color(0xFF3498DB),
+                        borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        progress == 1.0 ? '🏆 COMPLETE' : '⚔️ QUEST',
-                        style: TextStyle(
-                          color:
-                              progress == 1.0
-                                  ? Colors.white
-                                  : const Color(0xFFE94560),
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                        progress == 1.0 ? '完了' : '進行中',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -223,9 +208,9 @@ class GoalListScreen extends StatelessWidget {
                 Text(
                   mediumGoal.title,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2C3E50),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 if (mediumGoal.deadline != null) ...[
@@ -233,23 +218,23 @@ class GoalListScreen extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(
-                        Icons.schedule,
-                        color: Color(0xFFFFB74D),
-                        size: 16,
+                        Icons.schedule_outlined,
+                        color: Color(0xFFE67E22),
+                        size: 14,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '期限: ${DateFormat('yyyy/MM/dd').format(mediumGoal.deadline!)}',
                         style: const TextStyle(
-                          color: Color(0xFFFFB74D),
-                          fontSize: 14,
+                          color: Color(0xFFE67E22),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
                 ],
                 const SizedBox(height: 12),
-                // プログレスバー
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -257,47 +242,39 @@ class GoalListScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Progress: $completedTasks/$totalTasks',
+                          '進捗: $completedTasks/$totalTasks',
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: Color(0xFF7F8C8D),
                             fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
                           '${(progress * 100).toInt()}%',
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF2C3E50),
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Container(
-                      height: 6,
+                      height: 4,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(2),
+                        color: const Color(0xFFE0E6ED),
                       ),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
                         widthFactor: progress,
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            gradient: LinearGradient(
-                              colors:
-                                  progress == 1.0
-                                      ? [
-                                        const Color(0xFF4ECDC4),
-                                        const Color(0xFF44A08D),
-                                      ]
-                                      : [
-                                        const Color(0xFFE94560),
-                                        const Color(0xFFFF6B6B),
-                                      ],
-                            ),
+                            borderRadius: BorderRadius.circular(2),
+                            color: progress == 1.0
+                                ? const Color(0xFF27AE60)
+                                : const Color(0xFF3498DB),
                           ),
                         ),
                       ),
@@ -307,23 +284,22 @@ class GoalListScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    ElevatedButton.icon(
+                    TextButton.icon(
                       onPressed:
                           () => goalModel.showAddSmallGoalDialog(
                             context,
                             mediumGoal,
                           ),
-                      icon: const Icon(Icons.add, size: 16),
+                      icon: const Icon(Icons.add, size: 14),
                       label: const Text('タスク追加'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE94560),
-                        foregroundColor: Colors.white,
+                      style: TextButton.styleFrom(
+                        foregroundColor: const Color(0xFF3498DB),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
+                          horizontal: 8,
+                          vertical: 4,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                       ),
                     ),
@@ -331,9 +307,10 @@ class GoalListScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         mediumGoal.isExpanded
-                            ? Icons.expand_less
-                            : Icons.expand_more,
-                        color: Colors.white70,
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: const Color(0xFF7F8C8D),
+                        size: 20,
                       ),
                       onPressed:
                           () => goalModel.toggleMediumGoalExpansion(mediumGoal),
@@ -343,10 +320,18 @@ class GoalListScreen extends StatelessWidget {
               ],
             ),
           ),
-          // タスクリスト
           if (mediumGoal.isExpanded && mediumGoal.smallGoals.isNotEmpty)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              decoration: const BoxDecoration(
+                color: Color(0xFFFAFBFC),
+                border: Border(
+                  top: BorderSide(
+                    color: Color(0xFFE0E6ED),
+                    width: 1,
+                  ),
+                ),
+              ),
               child: Column(
                 children:
                     mediumGoal.smallGoals.map((smallGoal) {
@@ -370,7 +355,7 @@ class GoalListScreen extends StatelessWidget {
     MediumGoal mediumGoal,
   ) {
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_vert, color: Colors.white70),
+      icon: const Icon(Icons.more_horiz, color: Color(0xFF7F8C8D), size: 18),
       onSelected: (value) {
         if (value == 'edit') {
           goalModel.showEditMediumGoalDialog(context, mediumGoal);
@@ -384,9 +369,9 @@ class GoalListScreen extends StatelessWidget {
               value: 'edit',
               child: Row(
                 children: [
-                  Icon(Icons.edit, color: Color(0xFF533483)),
+                  Icon(Icons.edit_outlined, color: Color(0xFF3498DB), size: 16),
                   SizedBox(width: 8),
-                  Text('編集'),
+                  Text('編集', style: TextStyle(fontSize: 14)),
                 ],
               ),
             ),
@@ -394,9 +379,9 @@ class GoalListScreen extends StatelessWidget {
               value: 'delete',
               child: Row(
                 children: [
-                  Icon(Icons.delete, color: Colors.red),
+                  Icon(Icons.delete_outline, color: Color(0xFFE74C3C), size: 16),
                   SizedBox(width: 8),
-                  Text('削除'),
+                  Text('削除', style: TextStyle(fontSize: 14)),
                 ],
               ),
             ),
@@ -411,19 +396,17 @@ class GoalListScreen extends StatelessWidget {
     SmallGoal smallGoal,
   ) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 1),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color:
-            smallGoal.isCompleted
-                ? const Color(0xFF4ECDC4).withOpacity(0.1)
-                : Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color:
-              smallGoal.isCompleted
-                  ? const Color(0xFF4ECDC4).withOpacity(0.3)
-                  : Colors.white.withOpacity(0.1),
+        color: smallGoal.isCompleted
+            ? const Color(0xFF27AE60).withOpacity(0.05)
+            : Colors.white,
+        border: const Border(
+          bottom: BorderSide(
+            color: Color(0xFFE0E6ED),
+            width: 1,
+          ),
         ),
       ),
       child: Row(
@@ -431,26 +414,23 @@ class GoalListScreen extends StatelessWidget {
           GestureDetector(
             onTap: () => goalModel.toggleSmallGoalCompletion(smallGoal),
             child: Container(
-              width: 24,
-              height: 24,
+              width: 18,
+              height: 18,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:
-                    smallGoal.isCompleted
-                        ? const Color(0xFF4ECDC4)
-                        : Colors.transparent,
+                color: smallGoal.isCompleted
+                    ? const Color(0xFF27AE60)
+                    : Colors.white,
                 border: Border.all(
-                  color:
-                      smallGoal.isCompleted
-                          ? const Color(0xFF4ECDC4)
-                          : Colors.white.withOpacity(0.3),
-                  width: 2,
+                  color: smallGoal.isCompleted
+                      ? const Color(0xFF27AE60)
+                      : const Color(0xFFBDC3C7),
+                  width: 1.5,
                 ),
+                borderRadius: BorderRadius.circular(2),
               ),
-              child:
-                  smallGoal.isCompleted
-                      ? const Icon(Icons.check, color: Colors.white, size: 16)
-                      : null,
+              child: smallGoal.isCompleted
+                  ? const Icon(Icons.check, color: Colors.white, size: 12)
+                  : null,
             ),
           ),
           const SizedBox(width: 12),
@@ -461,13 +441,14 @@ class GoalListScreen extends StatelessWidget {
                 Text(
                   smallGoal.title,
                   style: TextStyle(
-                    color:
-                        smallGoal.isCompleted ? Colors.white70 : Colors.white,
+                    color: smallGoal.isCompleted 
+                        ? const Color(0xFF7F8C8D) 
+                        : const Color(0xFF2C3E50),
                     fontSize: 14,
-                    decoration:
-                        smallGoal.isCompleted
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
+                    fontWeight: FontWeight.w500,
+                    decoration: smallGoal.isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
                   ),
                 ),
                 if (smallGoal.deadline != null) ...[
@@ -475,16 +456,17 @@ class GoalListScreen extends StatelessWidget {
                   Row(
                     children: [
                       const Icon(
-                        Icons.schedule,
-                        color: Color(0xFFFFB74D),
+                        Icons.schedule_outlined,
+                        color: Color(0xFFE67E22),
                         size: 12,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         DateFormat('MM/dd').format(smallGoal.deadline!),
                         style: const TextStyle(
-                          color: Color(0xFFFFB74D),
-                          fontSize: 12,
+                          color: Color(0xFFE67E22),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
@@ -494,7 +476,7 @@ class GoalListScreen extends StatelessWidget {
             ),
           ),
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_horiz, color: Colors.white54, size: 20),
+            icon: const Icon(Icons.more_horiz, color: Color(0xFF7F8C8D), size: 16),
             onSelected: (value) {
               if (value == 'edit') {
                 goalModel.showEditSmallGoalDialog(
@@ -516,9 +498,9 @@ class GoalListScreen extends StatelessWidget {
                     value: 'edit',
                     child: Row(
                       children: [
-                        Icon(Icons.edit, color: Color(0xFF533483), size: 16),
+                        Icon(Icons.edit_outlined, color: Color(0xFF3498DB), size: 14),
                         SizedBox(width: 8),
-                        Text('編集'),
+                        Text('編集', style: TextStyle(fontSize: 13)),
                       ],
                     ),
                   ),
@@ -526,9 +508,9 @@ class GoalListScreen extends StatelessWidget {
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: Colors.red, size: 16),
+                        Icon(Icons.delete_outline, color: Color(0xFFE74C3C), size: 14),
                         SizedBox(width: 8),
-                        Text('削除'),
+                        Text('削除', style: TextStyle(fontSize: 13)),
                       ],
                     ),
                   ),
