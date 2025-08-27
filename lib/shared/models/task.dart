@@ -241,3 +241,69 @@ class GoalModel extends ChangeNotifier {
     );
   }
 }
+
+// ゲーム状態を管理するモデル
+class GameState {
+  int playerHP;
+  int playerMaxHP;
+  int playerMP;
+  int playerMaxMP;
+  int currentFloor;
+  
+  GameState({
+    this.playerHP = 100,
+    this.playerMaxHP = 100,
+    this.playerMP = 50,
+    this.playerMaxMP = 50,
+    this.currentFloor = 1,
+  });
+}
+
+// ゲームの状態管理クラス
+class GameModel extends ChangeNotifier {
+  GameState _gameState = GameState();
+  
+  GameState get gameState => _gameState;
+  
+  int get playerHP => _gameState.playerHP;
+  int get playerMaxHP => _gameState.playerMaxHP;
+  int get playerMP => _gameState.playerMP;
+  int get playerMaxMP => _gameState.playerMaxMP;
+  int get currentFloor => _gameState.currentFloor;
+  
+  void takeDamage(int damage) {
+    _gameState.playerHP = (_gameState.playerHP - damage).clamp(0, _gameState.playerMaxHP);
+    notifyListeners();
+  }
+  
+  void useMp(int mp) {
+    _gameState.playerMP = (_gameState.playerMP - mp).clamp(0, _gameState.playerMaxMP);
+    notifyListeners();
+  }
+  
+  void heal(int heal) {
+    _gameState.playerHP = (_gameState.playerHP + heal).clamp(0, _gameState.playerMaxHP);
+    notifyListeners();
+  }
+  
+  void nextFloor() {
+    _gameState.currentFloor++;
+    // フロア進行時にMP少し回復
+    _gameState.playerMP = (_gameState.playerMP + 10).clamp(0, _gameState.playerMaxMP);
+    notifyListeners();
+  }
+  
+  void resetToFullHealth() {
+    _gameState.playerHP = _gameState.playerMaxHP;
+    _gameState.playerMP = _gameState.playerMaxMP;
+    notifyListeners();
+  }
+  
+  void upgradeStats(int hpIncrease, int mpIncrease) {
+    _gameState.playerMaxHP += hpIncrease;
+    _gameState.playerMaxMP += mpIncrease;
+    _gameState.playerHP = _gameState.playerMaxHP;
+    _gameState.playerMP = _gameState.playerMaxMP;
+    notifyListeners();
+  }
+}

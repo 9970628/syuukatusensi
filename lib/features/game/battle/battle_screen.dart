@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:sennsi_app/shared/models/task.dart';
 
 enum BattleCommand {
   attack('攻撃'),
@@ -19,12 +21,6 @@ class BattleScreen extends StatefulWidget {
 }
 
 class _BattleScreenState extends State<BattleScreen> {
-  // プレイヤーのステータス
-  int playerHP = 100;
-  int playerMaxHP = 100;
-  int playerMP = 50;
-  int playerMaxMP = 50;
-
   // 敵のステータス
   int enemyHP = 80;
   int enemyMaxHP = 80;
@@ -36,58 +32,126 @@ class _BattleScreenState extends State<BattleScreen> {
   String battleMessage = 'バトル開始！';
 
   @override
+  void initState() {
+    super.initState();
+    // 階層に応じて敵の強さを調整
+    final gameModel = Provider.of<GameModel>(context, listen: false);
+    final floor = gameModel.currentFloor;
+    enemyMaxHP = 80 + (floor - 1) * 20;  // フロアが上がるごとに敵HPが20増加
+    enemyHP = enemyMaxHP;
+  }
+
+  // タスク完了数に基づく攻撃力・スキル力を計算
+  int _calculateAttackPower(GoalModel goalModel) {
+    final completedSmallGoals = goalModel.mediumGoals
+        .expand((goal) => goal.smallGoals)
+        .where((small) => small.isCompleted)
+        .length;
+    final completedMediumGoals = goalModel.mediumGoals
+        .where((goal) => goal.smallGoals.isNotEmpty && 
+                       goal.smallGoals.every((small) => small.isCompleted))
+        .length;
+    
+    // 基本攻撃力15 + 小タスク完了数×2 + 中間タスク完了数×5
+    return 15 + (completedSmallGoals * 2) + (completedMediumGoals * 5);
+  }
+
+  int _calculateSkillPower(GoalModel goalModel) {
+    final completedSmallGoals = goalModel.mediumGoals
+        .expand((goal) => goal.smallGoals)
+        .where((small) => small.isCompleted)
+        .length;
+    final completedMediumGoals = goalModel.mediumGoals
+        .where((goal) => goal.smallGoals.isNotEmpty && 
+                       goal.smallGoals.every((small) => small.isCompleted))
+        .length;
+    
+    // 基本スキル攻撃力25 + 小タスク完了数×3 + 中間タスク完了数×8
+    return 25 + (completedSmallGoals * 3) + (completedMediumGoals * 8);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/dungeon_corridor01.png'),
-            fit: BoxFit.cover,
+    return Consumer2<GameModel, GoalModel>(
+      builder: (context, gameModel, goalModel, child) {
+        return Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/dungeon_corridor01.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  // 上部：階層表示 + HP/MPステータス表示
+                  _buildStatusArea(gameModel, goalModel),
+                  
+                  // 中央：バトル情報とメッセージ
+                  Expanded(
+                    flex: 2,
+                    child: _buildBattleArea(),
+                  ),
+                  
+                  // 下部：コマンド選択エリア
+                  _buildCommandArea(),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildStatusArea(GameModel gameModel, GoalModel goalModel) {
+    return Column(
+      children: [
+        // 階層表示
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.purple.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: Text(
+            '${gameModel.currentFloor}階層',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
-        child: SafeArea(
-          child: Column(
+        // HP/MPステータス
+        Container(
+          padding: const EdgeInsets.all(16),
+          child: Row(
             children: [
-              // 上部：HP/MPステータス表示
-              _buildStatusArea(),
-              
-              // 中央：バトル情報とメッセージ
+              // プレイヤーステータス
               Expanded(
-                flex: 2,
-                child: _buildBattleArea(),
+                child: _buildPlayerStatus(gameModel),
               ),
-              
-              // 下部：コマンド選択エリア
-              _buildCommandArea(),
+              const SizedBox(width: 20),
+              // 敵ステータス
+              Expanded(
+                child: _buildEnemyStatus(),
+              ),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 
-  Widget _buildStatusArea() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          // プレイヤーステータス
-          Expanded(
-            child: _buildPlayerStatus(),
-          ),
-          const SizedBox(width: 20),
-          // 敵ステータス
-          Expanded(
-            child: _buildEnemyStatus(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlayerStatus() {
+  Widget _buildPlayerStatus(GameModel gameModel) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -107,9 +171,9 @@ class _BattleScreenState extends State<BattleScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          _buildHPBar('HP', playerHP, playerMaxHP, Colors.red),
+          _buildHPBar('HP', gameModel.playerHP, gameModel.playerMaxHP, Colors.red),
           const SizedBox(height: 4),
-          _buildHPBar('MP', playerMP, playerMaxMP, Colors.blue),
+          _buildHPBar('MP', gameModel.playerMP, gameModel.playerMaxMP, Colors.blue),
         ],
       ),
     );
@@ -198,19 +262,23 @@ class _BattleScreenState extends State<BattleScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              battleMessage,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(8),
               ),
-              textAlign: TextAlign.center,
+              child: SingleChildScrollView(
+                child: Text(
+                  battleMessage,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
           ),
         ],
@@ -306,14 +374,22 @@ class _BattleScreenState extends State<BattleScreen> {
   }
 
   void _executeAttack() {
+    final goalModel = Provider.of<GoalModel>(context, listen: false);
+    final gameModel = Provider.of<GameModel>(context, listen: false);
+    
     setState(() {
-      int damage = 15 + (DateTime.now().millisecond % 10);
+      int baseDamage = _calculateAttackPower(goalModel);
+      int damage = baseDamage + (DateTime.now().millisecond % 10);
       enemyHP = (enemyHP - damage).clamp(0, enemyMaxHP);
       battleMessage = '攻撃！ $damage のダメージを与えた！';
       
       if (enemyHP <= 0) {
         battleMessage += '\n敵を倒した！バトルに勝利！';
-        context.go('/stage');
+        gameModel.nextFloor(); // 次の階層へ
+        // 少し遅延してからstage画面に遷移
+        Future.delayed(const Duration(seconds: 2), () {
+          context.go('/stage');
+        });
       } else {
         // 敵の反撃
         Future.delayed(const Duration(seconds: 2), () {
@@ -324,15 +400,24 @@ class _BattleScreenState extends State<BattleScreen> {
   }
 
   void _executeSkill() {
+    final goalModel = Provider.of<GoalModel>(context, listen: false);
+    final gameModel = Provider.of<GameModel>(context, listen: false);
+    
     setState(() {
-      if (playerMP >= 10) {
-        int damage = 25 + (DateTime.now().millisecond % 15);
+      if (gameModel.playerMP >= 10) {
+        int baseSkillDamage = _calculateSkillPower(goalModel);
+        int damage = baseSkillDamage + (DateTime.now().millisecond % 15);
         enemyHP = (enemyHP - damage).clamp(0, enemyMaxHP);
-        playerMP = (playerMP - 10).clamp(0, playerMaxMP);
+        gameModel.useMp(10);
         battleMessage = 'スキル発動！ $damage のダメージを与えた！MP -10';
         
         if (enemyHP <= 0) {
           battleMessage += '\n敵を倒した！バトルに勝利！';
+          gameModel.nextFloor(); // 次の階層へ
+          // 少し遅延してからstage画面に遷移
+          Future.delayed(const Duration(seconds: 2), () {
+            context.go('/stage');
+          });
         } else {
           Future.delayed(const Duration(seconds: 2), () {
             _enemyAttack();
@@ -345,9 +430,11 @@ class _BattleScreenState extends State<BattleScreen> {
   }
 
   void _executeItem() {
+    final gameModel = Provider.of<GameModel>(context, listen: false);
+    
     setState(() {
       int heal = 20 + (DateTime.now().millisecond % 10);
-      playerHP = (playerHP + heal).clamp(0, playerMaxHP);
+      gameModel.heal(heal);
       battleMessage = 'ポーション使用！HPが $heal 回復した！';
       
       Future.delayed(const Duration(seconds: 2), () {
@@ -357,20 +444,44 @@ class _BattleScreenState extends State<BattleScreen> {
   }
 
   void _showStatus() {
+    final goalModel = Provider.of<GoalModel>(context, listen: false);
+    final gameModel = Provider.of<GameModel>(context, listen: false);
+    final completedSmallGoals = goalModel.mediumGoals
+        .expand((goal) => goal.smallGoals)
+        .where((small) => small.isCompleted)
+        .length;
+    final completedMediumGoals = goalModel.mediumGoals
+        .where((goal) => goal.smallGoals.isNotEmpty && 
+                       goal.smallGoals.every((small) => small.isCompleted))
+        .length;
+    final attackPower = _calculateAttackPower(goalModel);
+    final skillPower = _calculateSkillPower(goalModel);
+    
     setState(() {
-      battleMessage = 'プレイヤー HP:$playerHP/$playerMaxHP MP:$playerMP/$playerMaxMP\n敵 HP:$enemyHP/$enemyMaxHP';
+      battleMessage = '''階層: ${gameModel.currentFloor}
+プレイヤー HP:${gameModel.playerHP}/${gameModel.playerMaxHP} MP:${gameModel.playerMP}/${gameModel.playerMaxMP}
+敵 HP:$enemyHP/$enemyMaxHP
+
+タスク完了状況:
+小タスク完了: $completedSmallGoals個
+中間タスク完了: $completedMediumGoals個
+攻撃力: $attackPower
+スキル攻撃力: $skillPower''';
     });
   }
 
   void _enemyAttack() {
+    final gameModel = Provider.of<GameModel>(context, listen: false);
+    
     if (enemyHP > 0) {
       setState(() {
         int damage = 8 + (DateTime.now().millisecond % 8);
-        playerHP = (playerHP - damage).clamp(0, playerMaxHP);
+        gameModel.takeDamage(damage);
         battleMessage = '敵の攻撃！ $damage のダメージを受けた！';
         
-        if (playerHP <= 0) {
+        if (gameModel.playerHP <= 0) {
           battleMessage += '\nHPが0になった...敗北...';
+          context.go('/home');
         }
       });
     }
