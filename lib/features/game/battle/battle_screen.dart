@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 enum BattleCommand {
   attack('攻撃'),
@@ -312,6 +313,7 @@ class _BattleScreenState extends State<BattleScreen> {
       
       if (enemyHP <= 0) {
         battleMessage += '\n敵を倒した！バトルに勝利！';
+        context.go('/stage');
       } else {
         // 敵の反撃
         Future.delayed(const Duration(seconds: 2), () {

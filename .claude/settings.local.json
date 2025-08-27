@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(gh auth:*)",
-      "mcp__serena__list_dir"
+      "mcp__serena__list_dir",
+      "mcp__serena__check_onboarding_performed"
     ],
     "deny": []
   }

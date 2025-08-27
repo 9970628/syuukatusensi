@@ -12,7 +12,7 @@ import 'package:sennsi_app/features/profile/profile_data_input_screen.dart';
 import '../shared/widgets/shell.dart';
 
 import 'package:sennsi_app/features/game/battle/battle_screen.dart';
-
+import 'package:sennsi_app/features/game/stage_screen.dart';
 import 'package:flame/game.dart';
 
 
@@ -29,6 +29,11 @@ final router = GoRouter(
       path: '/status',
       pageBuilder: (context, state) =>
           MaterialPage(child: const StatusScreen()),
+    ),
+    GoRoute(
+      path: '/stage',
+      pageBuilder: (context, state) =>
+          MaterialPage(child: const StageScreen()),
     ),
 
     // 認証が必要なルート
