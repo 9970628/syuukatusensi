@@ -140,8 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: Colors.transparent, // <-- 1. Scaffoldの背景を透明に
       appBar: AppBar(
         title: const Text('ホーム'),
+        backgroundColor: Colors.transparent, // <-- 2. AppBarの背景も透明に
+        elevation: 0, // <-- (おまけ) AppBarの影を消して背景と一体化
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -172,54 +175,39 @@ class _HomeScreenState extends State<HomeScreen> {
           // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
           // ★★★ 3. 立ち絵表示エリア (仮置き) ★★★
           // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            //削除済み
+
+          // --- 4. ナビゲーションエリア ---
+        // ★★★ 変更点(1)：立ち絵エリアをInkWellで囲んでタップ可能にする ★★★
           Card(
             elevation: 2,
             color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-            child: Container(
-              height: 200, // イラストの高さを確保
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Text(
-                'ここに立ち絵を配置予定',
-                style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+            clipBehavior: Clip.antiAlias, // InkWellの波紋エフェクトをCardの角に合わせる
+            child: InkWell(
+              onTap: () {
+                // プロフィール画面 (status) へ遷移
+                context.go('/status');
+              },
+              child: Container(
+                height: 200,
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                     Text(
+                      'ここに立ち絵を配置予定',
+                      style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '(タップしてプロフィールへ)',
+                      style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-
-          // --- 4. ナビゲーションエリア ---
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.login),
-                  label: const FittedBox(
-                    child: Text('ログイン'),
-                  ),
-                  onPressed: () => context.go('/login'),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.calendar_today),
-                  label: const FittedBox(
-                    child: Text('カレンダー'),
-                  ),
-                  onPressed: () => context.go('/calendar'),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.gamepad_outlined),
-                  label: const FittedBox(
-                    child: Text('ゲーム'),
-                  ),
-                  onPressed: () => context.go('/game'),
-                ),
-              ),
-            ],
           ),
           const SizedBox(height: 24),
 
