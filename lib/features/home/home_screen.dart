@@ -140,8 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: Colors.transparent, // <-- 1. Scaffoldの背景を透明に
       appBar: AppBar(
         title: const Text('ホーム'),
+        backgroundColor: Colors.transparent, // <-- 2. AppBarの背景も透明に
+        elevation: 0, // <-- (おまけ) AppBarの影を消して背景と一体化
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -172,54 +175,30 @@ class _HomeScreenState extends State<HomeScreen> {
           // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
           // ★★★ 3. 立ち絵表示エリア (仮置き) ★★★
           // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            //削除済み
+
+          // --- 4. ナビゲーションエリア ---
+        // ★★★ 変更点(1)：立ち絵エリアをInkWellで囲んでタップ可能にする ★★★
           Card(
             elevation: 2,
             color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-            child: Container(
-              height: 200, // イラストの高さを確保
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Text(
-                'ここに立ち絵を配置予定',
-                style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () {
+                context.go('/status');
+              },
+              child: AspectRatio(
+                aspectRatio: 1.0, // アスペクト比を1:1（正方形）に設定
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0), // 画像の周囲に余白
+                  child: Image.asset(
+                    // 'character_stand.png'の部分は、あなたが保存した実際のファイル名にしてください
+                    'images/character.png',
+                    fit: BoxFit.contain, // 画像がコンテナに収まるように調整
+                  ),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-
-          // --- 4. ナビゲーションエリア ---
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.login),
-                  label: const FittedBox(
-                    child: Text('ログイン'),
-                  ),
-                  onPressed: () => context.go('/login'),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.calendar_today),
-                  label: const FittedBox(
-                    child: Text('カレンダー'),
-                  ),
-                  onPressed: () => context.go('/calendar'),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.gamepad_outlined),
-                  label: const FittedBox(
-                    child: Text('ゲーム'),
-                  ),
-                  onPressed: () => context.go('/game'),
-                ),
-              ),
-            ],
           ),
           const SizedBox(height: 24),
 
