@@ -2,9 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sennsi_app/shared/models/task.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class GoalListScreen extends StatelessWidget {
+class GoalListScreen extends StatefulWidget {
   const GoalListScreen({super.key});
+
+  @override
+  State<GoalListScreen> createState() => _GoalListScreenState();
+}
+
+class _GoalListScreenState extends State<GoalListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // GoalModelのloadGoalsを呼ぶ
+    Future.microtask(() {
+      // Provider経由でGoalModelを取得
+      final goalModel = Provider.of<GoalModel>(context, listen: false);
+      goalModel.loadGoals();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +48,7 @@ class GoalListScreen extends StatelessWidget {
               color: Color(0xFFF8F9FA),
               image: DecorationImage(
                 image: NetworkImage(
-                  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgo8cGF0aCBkPSJNIDIwIDAgTCAwIDAgMCAyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRTBFNkVEIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9wYXR0ZXJuPgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiIC8+Cjwvc3ZnPg=='
+                  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgo8cGF0aCBkPSJNIDIwIDAgTCAwIDAgMCAyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRTBFNkVEIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9wYXR0ZXJuPgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiIC8+Cjwvc3ZnPg==',
                 ),
                 repeat: ImageRepeat.repeat,
                 opacity: 0.3,
@@ -114,10 +131,7 @@ class GoalListScreen extends StatelessWidget {
                 const Text(
                   '就活に関するタスクを追加して\n効率的に進めましょう',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF7F8C8D),
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Color(0xFF7F8C8D), fontSize: 14),
                 ),
               ],
             ),
@@ -143,9 +157,10 @@ class GoalListScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: progress == 1.0
-              ? const Color(0xFF27AE60)
-              : const Color(0xFF34495E),
+          color:
+              progress == 1.0
+                  ? const Color(0xFF27AE60)
+                  : const Color(0xFF34495E),
           width: 1,
         ),
         boxShadow: [
@@ -161,18 +176,16 @@ class GoalListScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: progress == 1.0 
-                  ? const Color(0xFF27AE60).withOpacity(0.1)
-                  : const Color(0xFFF8F9FA),
+              color:
+                  progress == 1.0
+                      ? const Color(0xFF27AE60).withOpacity(0.1)
+                      : const Color(0xFFF8F9FA),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(3),
                 topRight: Radius.circular(3),
               ),
               border: const Border(
-                bottom: BorderSide(
-                  color: Color(0xFFE0E6ED),
-                  width: 1,
-                ),
+                bottom: BorderSide(color: Color(0xFFE0E6ED), width: 1),
               ),
             ),
             child: Column(
@@ -186,9 +199,10 @@ class GoalListScreen extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: progress == 1.0
-                            ? const Color(0xFF27AE60)
-                            : const Color(0xFF3498DB),
+                        color:
+                            progress == 1.0
+                                ? const Color(0xFF27AE60)
+                                : const Color(0xFF3498DB),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
@@ -272,9 +286,10 @@ class GoalListScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(2),
-                            color: progress == 1.0
-                                ? const Color(0xFF27AE60)
-                                : const Color(0xFF3498DB),
+                            color:
+                                progress == 1.0
+                                    ? const Color(0xFF27AE60)
+                                    : const Color(0xFF3498DB),
                           ),
                         ),
                       ),
@@ -326,10 +341,7 @@ class GoalListScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Color(0xFFFAFBFC),
                 border: Border(
-                  top: BorderSide(
-                    color: Color(0xFFE0E6ED),
-                    width: 1,
-                  ),
+                  top: BorderSide(color: Color(0xFFE0E6ED), width: 1),
                 ),
               ),
               child: Column(
@@ -379,7 +391,11 @@ class GoalListScreen extends StatelessWidget {
               value: 'delete',
               child: Row(
                 children: [
-                  Icon(Icons.delete_outline, color: Color(0xFFE74C3C), size: 16),
+                  Icon(
+                    Icons.delete_outline,
+                    color: Color(0xFFE74C3C),
+                    size: 16,
+                  ),
                   SizedBox(width: 8),
                   Text('削除', style: TextStyle(fontSize: 14)),
                 ],
@@ -399,38 +415,58 @@ class GoalListScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 1),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: smallGoal.isCompleted
-            ? const Color(0xFF27AE60).withOpacity(0.05)
-            : Colors.white,
+        color:
+            smallGoal.isCompleted
+                ? const Color(0xFF27AE60).withOpacity(0.05)
+                : Colors.white,
         border: const Border(
-          bottom: BorderSide(
-            color: Color(0xFFE0E6ED),
-            width: 1,
-          ),
+          bottom: BorderSide(color: Color(0xFFE0E6ED), width: 1),
         ),
       ),
       child: Row(
         children: [
           GestureDetector(
-            onTap: () => goalModel.toggleSmallGoalCompletion(smallGoal),
+            onTap: () async {
+              // トグル前の状態を保存
+              final wasCompleted = smallGoal.isCompleted;
+
+              // 完了状態をトグル
+              goalModel.toggleSmallGoalCompletion(smallGoal);
+
+              // タスク数を更新
+              final prefs = await SharedPreferences.getInstance();
+              int totalTasks = prefs.getInt('totalTasks') ?? 0;
+
+              if (!wasCompleted) {
+                // チェックを入れる → +1
+                totalTasks += 1;
+              } else {
+                // チェックを外す → -1
+                totalTasks = totalTasks > 0 ? totalTasks - 1 : 0;
+              }
+              await prefs.setInt('totalTasks', totalTasks);
+            },
             child: Container(
               width: 18,
               height: 18,
               decoration: BoxDecoration(
-                color: smallGoal.isCompleted
-                    ? const Color(0xFF27AE60)
-                    : Colors.white,
+                color:
+                    smallGoal.isCompleted
+                        ? const Color(0xFF27AE60)
+                        : Colors.white,
                 border: Border.all(
-                  color: smallGoal.isCompleted
-                      ? const Color(0xFF27AE60)
-                      : const Color(0xFFBDC3C7),
+                  color:
+                      smallGoal.isCompleted
+                          ? const Color(0xFF27AE60)
+                          : const Color(0xFFBDC3C7),
                   width: 1.5,
                 ),
                 borderRadius: BorderRadius.circular(2),
               ),
-              child: smallGoal.isCompleted
-                  ? const Icon(Icons.check, color: Colors.white, size: 12)
-                  : null,
+              child:
+                  smallGoal.isCompleted
+                      ? const Icon(Icons.check, color: Colors.white, size: 12)
+                      : null,
             ),
           ),
           const SizedBox(width: 12),
@@ -441,14 +477,16 @@ class GoalListScreen extends StatelessWidget {
                 Text(
                   smallGoal.title,
                   style: TextStyle(
-                    color: smallGoal.isCompleted 
-                        ? const Color(0xFF7F8C8D) 
-                        : const Color(0xFF2C3E50),
+                    color:
+                        smallGoal.isCompleted
+                            ? const Color(0xFF7F8C8D)
+                            : const Color(0xFF2C3E50),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    decoration: smallGoal.isCompleted
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
+                    decoration:
+                        smallGoal.isCompleted
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                   ),
                 ),
                 if (smallGoal.deadline != null) ...[
@@ -476,7 +514,11 @@ class GoalListScreen extends StatelessWidget {
             ),
           ),
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_horiz, color: Color(0xFF7F8C8D), size: 16),
+            icon: const Icon(
+              Icons.more_horiz,
+              color: Color(0xFF7F8C8D),
+              size: 16,
+            ),
             onSelected: (value) {
               if (value == 'edit') {
                 goalModel.showEditSmallGoalDialog(
@@ -498,7 +540,11 @@ class GoalListScreen extends StatelessWidget {
                     value: 'edit',
                     child: Row(
                       children: [
-                        Icon(Icons.edit_outlined, color: Color(0xFF3498DB), size: 14),
+                        Icon(
+                          Icons.edit_outlined,
+                          color: Color(0xFF3498DB),
+                          size: 14,
+                        ),
                         SizedBox(width: 8),
                         Text('編集', style: TextStyle(fontSize: 13)),
                       ],
@@ -508,7 +554,11 @@ class GoalListScreen extends StatelessWidget {
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete_outline, color: Color(0xFFE74C3C), size: 14),
+                        Icon(
+                          Icons.delete_outline,
+                          color: Color(0xFFE74C3C),
+                          size: 14,
+                        ),
                         SizedBox(width: 8),
                         Text('削除', style: TextStyle(fontSize: 13)),
                       ],
