@@ -27,6 +27,20 @@ class _GoalListScreenState extends State<GoalListScreen> {
   Widget build(BuildContext context) {
     return Consumer<GoalModel>(
       builder: (context, goalModel, child) {
+        // 全体の統計を計算
+        final totalMediumGoals = goalModel.mediumGoals.length;
+        final completedMediumGoals = goalModel.mediumGoals
+            .where((goal) => goal.smallGoals.isNotEmpty && 
+                           goal.smallGoals.every((small) => small.isCompleted))
+            .length;
+        final totalSmallGoals = goalModel.mediumGoals
+            .expand((goal) => goal.smallGoals)
+            .length;
+        final completedSmallGoals = goalModel.mediumGoals
+            .expand((goal) => goal.smallGoals)
+            .where((small) => small.isCompleted)
+            .length;
+
         return Scaffold(
           backgroundColor: const Color(0xFFF8F9FA),
           appBar: AppBar(
@@ -54,17 +68,127 @@ class _GoalListScreenState extends State<GoalListScreen> {
                 opacity: 0.3,
               ),
             ),
-            child:
-                goalModel.mediumGoals.isEmpty
-                    ? _buildEmptyState()
-                    : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: goalModel.mediumGoals.length,
-                      itemBuilder: (context, index) {
-                        final mediumGoal = goalModel.mediumGoals[index];
-                        return _buildQuestCard(context, goalModel, mediumGoal);
-                      },
+            child: Column(
+              children: [
+                // 統計情報を表示するヘッダー部分
+                if (goalModel.mediumGoals.isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: const Color(0xFF34495E), width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          '進捗状況',
+                          style: TextStyle(
+                            color: Color(0xFF2C3E50),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF3498DB).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: const Color(0xFF3498DB).withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      '中間タスク',
+                                      style: TextStyle(
+                                        color: Color(0xFF3498DB),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '$completedMediumGoals / $totalMediumGoals',
+                                      style: const TextStyle(
+                                        color: Color(0xFF2C3E50),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF27AE60).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: const Color(0xFF27AE60).withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      '小タスク',
+                                      style: TextStyle(
+                                        color: Color(0xFF27AE60),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '$completedSmallGoals / $totalSmallGoals',
+                                      style: const TextStyle(
+                                        color: Color(0xFF2C3E50),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                // メインコンテンツ
+                Expanded(
+                  child: goalModel.mediumGoals.isEmpty
+                      ? _buildEmptyState()
+                      : ListView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          itemCount: goalModel.mediumGoals.length,
+                          itemBuilder: (context, index) {
+                            final mediumGoal = goalModel.mediumGoals[index];
+                            return _buildQuestCard(context, goalModel, mediumGoal);
+                          },
+                        ),
+                ),
+              ],
+            ),
           ),
           floatingActionButton: Container(
             decoration: BoxDecoration(

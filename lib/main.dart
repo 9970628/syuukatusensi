@@ -30,8 +30,11 @@ Future<void> main() async {
 
     DevicePreview(
       enabled: true,
-      builder: (context) => ChangeNotifierProvider(
-        create: (context) => GoalModel(),
+      builder: (context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => GoalModel()),
+          ChangeNotifierProvider(create: (context) => GameModel()),
+        ],
         child: const MyApp(),
       ),
 
