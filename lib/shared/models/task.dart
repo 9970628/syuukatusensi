@@ -1,6 +1,8 @@
 // lib/models/task.dart
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // ★★★ 変更点：新しいダイアログファイルをインポート ★★★
 import 'package:sennsi_app/shared/widgets/add_edit_medium_goal_dialog.dart';
 import 'package:sennsi_app/shared/widgets/add_edit_small_goal_dialog.dart';
@@ -17,6 +19,20 @@ class SmallGoal {
     this.isCompleted = false,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'deadline': deadline?.toIso8601String(),
+    'isCompleted': isCompleted,
+    'createdAt': createdAt.toIso8601String()
+  };
+
+  factory SmallGoal.fromJson(Map<String, dynamic> json) => SmallGoal(
+    title: json['title'],
+    deadline: json['deadline'] != null ? DateTime.parse(json['deadline']) : null,
+    isCompleted: json['isCompleted'] ?? false,
+    createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+  );
 }
 
 class MediumGoal {
@@ -32,6 +48,22 @@ class MediumGoal {
     this.isExpanded = false,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'deadline': deadline?.toIso8601String(),
+    'smallGoals': smallGoals.map((g) => g.toJson()).toList(),
+    'createdAt': createdAt.toIso8601String(),
+  };
+
+  factory MediumGoal.fromJson(Map<String, dynamic> json) => MediumGoal(
+    title: json['title'],
+    deadline: json['deadline'] != null ? DateTime.parse(json['deadline']) : null,
+    smallGoals: (json['smallGoals'] as List)
+        .map((e) => SmallGoal.fromJson(e))
+        .toList(),
+    createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null
+  );
 }
 
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -88,7 +120,8 @@ class GoalModel extends ChangeNotifier {
     _mediumGoals.add(
       MediumGoal(title: title, deadline: deadline, smallGoals: []),
     );
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   void editMediumGoal(
@@ -98,23 +131,27 @@ class GoalModel extends ChangeNotifier {
   ) {
     goalToEdit.title = newTitle;
     goalToEdit.deadline = newDeadline;
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   void deleteMediumGoal(MediumGoal goalToDelete) {
     _mediumGoals.remove(goalToDelete);
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   // 小目標の操作
   void addSmallGoal(MediumGoal parentGoal, String title, DateTime? deadline) {
     parentGoal.smallGoals.add(SmallGoal(title: title, deadline: deadline));
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   void toggleSmallGoalCompletion(SmallGoal smallGoal) {
     smallGoal.isCompleted = !smallGoal.isCompleted;
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   void editSmallGoal(
@@ -124,12 +161,14 @@ class GoalModel extends ChangeNotifier {
   ) {
     goalToEdit.title = newTitle;
     goalToEdit.deadline = newDeadline;
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   void deleteSmallGoal(MediumGoal parentGoal, SmallGoal smallGoal) {
     parentGoal.smallGoals.remove(smallGoal);
-    _notify();
+    saveGoals();
+    notifyListeners();
   }
 
   // 開閉状態の操作 (UIの状態なので、ここではsetStateの代わりにnotifyListenersを呼ぶ)
@@ -176,13 +215,11 @@ class GoalModel extends ChangeNotifier {
   ) {
     showDialog(
       context: context,
-      builder:
-          (context) => AddOrEditSmallGoalDialog(
-            onSave:
-                (title, deadline) => editSmallGoal(smallGoal, title, deadline),
-            isEditMode: true,
-            initialGoal: smallGoal,
-          ),
+      builder: (context) => AddOrEditSmallGoalDialog(
+        onSave: (title, deadline) => editSmallGoal(smallGoal, title, deadline),
+        isEditMode: true,
+        initialGoal: smallGoal,
+      ),
     );
   }
 
@@ -239,5 +276,23 @@ class GoalModel extends ChangeNotifier {
             ],
           ),
     );
+  }
+
+  // 永続化関連
+  Future<void> saveGoals() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = jsonEncode(_mediumGoals.map((g) => g.toJson()).toList());
+    await prefs.setString('mediumGoals', jsonStr);
+  }
+
+  Future<void> loadGoals() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = prefs.getString('mediumGoals');
+    if (jsonStr != null) {
+      final List decoded = jsonDecode(jsonStr);
+      _mediumGoals.clear();
+      _mediumGoals.addAll(decoded.map((e) => MediumGoal.fromJson(e)).toList());
+      notifyListeners();
+    }
   }
 }
