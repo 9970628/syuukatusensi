@@ -182,29 +182,20 @@ class _HomeScreenState extends State<HomeScreen> {
           Card(
             elevation: 2,
             color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-            clipBehavior: Clip.antiAlias, // InkWellの波紋エフェクトをCardの角に合わせる
+            clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: () {
-                // プロフィール画面 (status) へ遷移
                 context.go('/status');
               },
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                     Text(
-                      'ここに立ち絵を配置予定',
-                      style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[700]),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '(タップしてプロフィールへ)',
-                      style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
-                    ),
-                  ],
+              child: AspectRatio(
+                aspectRatio: 1.0, // アスペクト比を1:1（正方形）に設定
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0), // 画像の周囲に余白
+                  child: Image.asset(
+                    // 'character_stand.png'の部分は、あなたが保存した実際のファイル名にしてください
+                    'images/character.png',
+                    fit: BoxFit.contain, // 画像がコンテナに収まるように調整
+                  ),
                 ),
               ),
             ),
